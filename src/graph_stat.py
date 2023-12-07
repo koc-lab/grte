@@ -18,19 +18,22 @@ class PPMI:
         self.word_pair_count = self.build_word_pair_count_dict()
         (self.weight_ff, self.row_ff, self.col_ff) = self.build_ppmi()
 
-    def build_vocab(self):
+    def build_vocab(self, min_count=40):
         word_freq = {}
-        word_set = set()
+
+        # Count word occurrences
         for docs in self.doc_content_list:
             words = docs.split()
             for word in words:
-                word_set.add(word)
                 if word in word_freq:
                     word_freq[word] += 1
                 else:
                     word_freq[word] = 1
 
-        vocab, vocab_size = list(word_set), len(list(word_set))
+        # Filter words based on min_count
+        word_freq = {word: count for word, count in word_freq.items() if count >= min_count}
+
+        vocab, vocab_size = list(word_freq.keys()), len(word_freq)
         return vocab, vocab_size, word_freq
 
     def build_word_id_map(self):
@@ -43,6 +46,7 @@ class PPMI:
         windows = []
         for doc_words in self.doc_content_list:
             words = doc_words.split()
+            words = [word for word in words if word in self.vocab]
             if len(words) <= self.window_size:
                 windows.append(words)
             else:
@@ -103,9 +107,7 @@ class PPMI:
             count = self.word_pair_count[key]
             word_freq_i = self.word_window_freq[self.vocab[i]]
             word_freq_j = self.word_window_freq[self.vocab[j]]
-            pmi = log(
-                (1.0 * count / num_window) / (1.0 * word_freq_i * word_freq_j / (num_window * num_window))
-            )
+            pmi = log((1.0 * count / num_window) / (1.0 * word_freq_i * word_freq_j / (num_window * num_window)))
             if pmi <= 0:
                 continue
 
@@ -128,6 +130,7 @@ class TFIDF:
         doc_word_freq = {}
         for doc_id, doc_words in enumerate(self.doc_content_list):
             words = doc_words.split()
+            words = [word for word in words if word in self.vocab]
             for word in words:
                 word_id = self.word_id_map[word]
                 doc_word_str = str(doc_id) + "," + str(word_id)
@@ -142,6 +145,7 @@ class TFIDF:
 
         for i, docs in enumerate(self.doc_content_list):
             words = docs.split()
+            words = [word for word in words if word in self.vocab]
             doc_word_set = set()
             for word in words:
                 if word in doc_word_set:

@@ -12,10 +12,16 @@ from sklearn.neighbors import kneighbors_graph as knn
 class Dataset:
     def __init__(self, dataset_name):
         self.dataset_name = dataset_name
-        path1 = Path.joinpath(Path.cwd(), "data-raw", dataset_name + ".txt")
-        path2 = Path.joinpath(Path.cwd(), "data-raw", "corpus", dataset_name + ".clean.txt")
+        path1 = Path.joinpath(Path(__file__).parent.parent, "data-raw", dataset_name + ".txt")
+        path2 = Path.joinpath(
+            Path(__file__).parent.parent,
+            "data-raw",
+            "corpus",
+            dataset_name + ".clean.txt",
+        )
 
         self.train_ids, self.test_ids, self.y = self.foo(path1)
+        #! this y is raw labels, they are strings
         self.doc_list = self.boo(path2)
         self.transform_variables()
         self.generate_graphs()
@@ -23,7 +29,8 @@ class Dataset:
         self.y_one_hot = Dataset.to_one_hot(self.y)
 
     def generate_graphs(self):
-        ppmi = PPMI(self.doc_list, window_size=20)
+        #! window size default 20, changed it to 5 to decrease number of words in 20ng
+        ppmi = PPMI(self.doc_list, window_size=5)
         tfidf = TFIDF(ppmi.word_id_map, self.doc_list, ppmi.vocab, ppmi.word_freq)
         w_nf, r_nf, c_nf = tfidf.weight_nf, tfidf.row_nf, tfidf.col_nf
         w_ff, r_ff, c_ff = ppmi.weight_ff, ppmi.row_ff, ppmi.col_ff
@@ -106,7 +113,8 @@ class Dataset:
 
 if __name__ == "__main__":
     # To generate the dataset files, run this script.
-    for dataset_name in ["mr", "ohsumed", "R8", "R52", "20ng"]:
+    # for dataset_name in ["mr", "ohsumed", "R8", "R52", "20ng"]:
+    for dataset_name in ["20ng"]:
         DATA_DIR = Path.joinpath(Path.cwd(), "data-processed")
         DATA_DIR.mkdir(exist_ok=True)
         dataset_path = DATA_DIR.joinpath(dataset_name + ".pkl")
@@ -116,3 +124,6 @@ if __name__ == "__main__":
                 pkl.dump(dataset, f)
         else:
             print(f"{dataset_path} already exists.")
+
+    #! Şimdi bu datasetteki y original label aslında bunu dataset.y diye tutmak saçma.
+    #! ayrıyetten bert finetune ettiğimiz kısımda bire bir dictler aynı olmuyor onu ordan çekmek lazım
