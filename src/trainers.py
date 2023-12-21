@@ -8,7 +8,8 @@ from models import Type3, Type4, Type12
 from torch.nn import functional as F
 from torch.optim import Optimizer
 from tqdm.auto import tqdm
-from utils import compute_metrics
+
+from src.util_fncs import compute_metrics
 
 
 class TypeTrainer:

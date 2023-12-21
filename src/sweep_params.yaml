@@ -1,0 +1,28 @@
+name: type3
+method: random
+metric:
+  name: test/best_test_acc
+  goal: maximize
+
+parameters:
+  lmbd: 
+    values: [0.65,0.70,0.75,0.80]
+
+  path:
+    values: ["FF-NF", "FN-NF", "NN-NN", "NF-NN"]
+    probabilities: [0.25, 0.25, 0.25, 0.25]
+  gcn_p:
+    min: 0.1
+    max: 0.5
+  gcn_lr:
+    min: 0.00001
+    max: 0.001
+  wd: 
+    min: 0.00001
+    max: 0.001
+  
+  fan_mid:
+    values: [128,256,512]
+
+
+  

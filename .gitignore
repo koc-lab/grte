@@ -4,12 +4,13 @@ data-raw/
 *.ipynb
 *.pkl
 *.pth
-
+*.csv
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
 *$py.class
-
+wandb/
+plotting/
 # C extensions
 *.so
 

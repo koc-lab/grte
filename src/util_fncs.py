@@ -4,7 +4,6 @@ from pathlib import Path
 
 import numpy as np
 import torch
-from constants import get_label_to_int
 from graph_datasets import Dataset
 from sklearn.metrics import accuracy_score, f1_score
 from torch.utils.data import DataLoader, TensorDataset
@@ -29,15 +28,10 @@ def compute_metrics(output, labels):
     return {"w_f1": w_f1, "macro": macro, "micro": micro, "acc": acc}
 
 
-def foo_dataset(dataset_name) -> Dataset:
-    #! We forgot the convert y to int labels, so we do it here depending on the processed
-    #! dataset coming from fine-tune-text-graphs
+def load_processed_dataset(dataset_name):
     file_path = Path(__file__).parent.parent.joinpath("data-processed", f"{dataset_name}.pkl")
     with open(file_path, "rb") as file:
         dataset: Dataset = pickle.load(file)
-
-    label_to_int = get_label_to_int(dataset_name)
-    dataset.y = torch.tensor([label_to_int[label] for label in dataset.y]).to("mps")
     return dataset
 
 
@@ -57,7 +51,7 @@ def get_encoder_input(model_name, sentences):
 
 
 def get_loaders(dataset_name):
-    dataset: Dataset = foo_dataset(dataset_name)
+    dataset: Dataset = load_processed_dataset(dataset_name)
     i_ids, a_mask = get_encoder_input("roberta-base", list(dataset.doc_list))
 
     z = zip([dataset.train_ids, dataset.test_ids], ["train", "test"])
@@ -70,7 +64,7 @@ def get_loaders(dataset_name):
     return loaders
 
 
-def get_A_s(dataset, path):
+def get_A_s(dataset: Dataset, path):
     if path == "FF-NF":
         return [dataset.FF.to_dense().to("mps"), dataset.NF.to_dense().to("mps")]
     elif path == "FN-NF":
@@ -81,11 +75,6 @@ def get_A_s(dataset, path):
         return [dataset.NF.to_dense().to("mps"), dataset.NN.to_dense().to("mps")]
     else:
         raise ValueError("Path must be one of FF-NF, FN-NF, NN-NN, NF-NN")
-
-
-# type1 ise pathin ilk kısmının ikinci dimensionı bu her türlü
-# başka bir typesa ve FF-NF veya NF-NN ise ilknin ikinci dimensionı
-# geri kalan ise get encoder output
 
 
 def get_variables(model_type: str, path, dataset: Dataset):

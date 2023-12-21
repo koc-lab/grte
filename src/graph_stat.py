@@ -5,9 +5,10 @@ from tqdm.auto import tqdm
 
 
 class PPMI:
-    def __init__(self, doc_content_list: List[str], window_size: int = 20):
+    def __init__(self, doc_content_list: List[str], window_size: int = 20, min_count=1):
         self.doc_content_list = doc_content_list
         self.window_size = window_size
+        self.min_count = min_count
 
         self.vocab, self.vocab_size, self.word_freq = self.build_vocab()
         self.word_id_map = self.build_word_id_map()
@@ -18,7 +19,7 @@ class PPMI:
         self.word_pair_count = self.build_word_pair_count_dict()
         (self.weight_ff, self.row_ff, self.col_ff) = self.build_ppmi()
 
-    def build_vocab(self, min_count=40):
+    def build_vocab(self):
         word_freq = {}
 
         # Count word occurrences
@@ -31,7 +32,7 @@ class PPMI:
                     word_freq[word] = 1
 
         # Filter words based on min_count
-        word_freq = {word: count for word, count in word_freq.items() if count >= min_count}
+        word_freq = {word: count for word, count in word_freq.items() if count >= self.min_count}
 
         vocab, vocab_size = list(word_freq.keys()), len(word_freq)
         return vocab, vocab_size, word_freq
@@ -44,7 +45,7 @@ class PPMI:
 
     def build_windows(self):
         windows = []
-        for doc_words in self.doc_content_list:
+        for doc_words in tqdm(self.doc_content_list):
             words = doc_words.split()
             words = [word for word in words if word in self.vocab]
             if len(words) <= self.window_size:
@@ -143,7 +144,7 @@ class TFIDF:
     def build_tfidf(self):
         row_nf, col_nf, weight_nf = [], [], []
 
-        for i, docs in enumerate(self.doc_content_list):
+        for i, docs in tqdm(enumerate(self.doc_content_list)):
             words = docs.split()
             words = [word for word in words if word in self.vocab]
             doc_word_set = set()

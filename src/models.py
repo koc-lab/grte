@@ -30,13 +30,21 @@ class Type12(nn.Module):
         super().__init__()
         self.c = config
         self.gcn1 = GraphConvolution(self.c.fan_in, self.c.fan_mid)
-        self.gcn2 = GraphConvolution(self.c.fan_mid, self.c.fan_out)
+        self.ln1 = nn.LayerNorm(self.c.fan_mid)
+        self.gcn2 = GraphConvolution(self.c.fan_mid, self.c.fan_mid // 2)
+        self.ln2 = nn.LayerNorm(self.c.fan_mid // 2)
+        self.linear = nn.Linear(self.c.fan_mid // 2, self.c.fan_out)
 
     def forward(self, x: torch.Tensor, A_s: List[torch.Tensor]):
         x = self.gcn1(x, A_s[0])
+        x = self.ln1(x)
         x = F.leaky_relu(x)
         x = F.dropout(x, self.c.dropout, training=self.training)
         x = self.gcn2(x, A_s[1])
+        x = self.ln2(x)
+        x = F.leaky_relu(x)
+        x = F.dropout(x, self.c.dropout, training=self.training)
+        x = self.linear(x)
         x = F.log_softmax(x, dim=1)
         return x
 

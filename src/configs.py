@@ -69,10 +69,10 @@ class Type4Input:
 class SearchParams:
     fan_mid: int
     gcn_p: float  # dropout prob
-    encoder_p: float
-    lmbd: float
     gcn_lr: float
-    encoder_lr: float
     wd: float
-    max_epochs: int
-    patience: int
+    lmbd: float
+    encoder_p: float = 0.0
+    encoder_lr: float = 0.0
+    max_epochs: int = 1000
+    patience: int = 50
