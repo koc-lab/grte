@@ -4,7 +4,21 @@
 [![Python Version](https://img.shields.io/badge/python-3.8-blue)](https://www.python.org)
 [![PyTorch](https://img.shields.io/badge/PyTorch-%23EE4C2C.svg?logo=PyTorch&logoColor=white)](https://pytorch.org)
 
-This repository contains the code for the "Graph Receptive Transformer Encoder for Text Classification" paper submitted to _IEEE Transactions on Signal and Information Processing_.
+This repository contains the code for the ["Graph Receptive Transformer Encoder for Text Classification"](https://doi.org/10.1109/TSIPN.2024.3380362) paper published in _IEEE Transactions on Signal and Information Processing over Networks_. Please cite the following paper if you use this code in your research:
+
+```bibtex
+@article{grte2024,
+  author   = {Aras, Arda Can and Alikasifoglu ˘, Tuna and Koç, Aykut},
+  journal  = {IEEE Transactions on Signal and Information Processing over Networks},
+  title    = {Graph Receptive Transformer Encoder for Text Classification},
+  year     = {2024},
+  volume   = {},
+  number   = {},
+  pages    = {1-13},
+  keywords = {Text categorization;Context modeling;Training;Task analysis;Transformers;Computational modeling;Semantics;Text Classification;Graph Neural Networks (GNNs);Graph Convolutional Networks (GCNs);BERT;Transformers;Inductive;Transductive},
+  doi      = {10.1109/TSIPN.2024.3380362}
+}
+```
 
 ## Installation
 

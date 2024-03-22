@@ -1,0 +1,30 @@
+cff-version: 1.2.0
+message: Please cite the following works when using this software.
+preferred-citation:
+  authors:
+    - family-names: Aras
+      given-names: Arda Can
+    - family-names: Alikaşifoğlu
+      given-names: Tuna
+    - family-names: Koç
+      given-names: Aykut
+  doi: 10.1109/tsipn.2024.3380362
+  identifiers:
+    - type: doi
+      value: 10.1109/tsipn.2024.3380362
+    - type: url
+      value: http://dx.doi.org/10.1109/TSIPN.2024.3380362
+    - type: other
+      value: urn:issn:2373-776X
+  title: Graph Receptive Transformer Encoder for Text Classification
+  url: http://dx.doi.org/10.1109/TSIPN.2024.3380362
+  database: Crossref
+  date-published: 2024-01-01
+  year: 2024
+  issn: 2373-776X
+  journal: IEEE Transactions on Signal and Information Processing over Networks
+  publisher:
+    name: Institute of Electrical and Electronics Engineers (IEEE)
+  start: '1'
+  end: '13'
+  type: article
