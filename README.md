@@ -8,14 +8,13 @@ This repository contains the code for the ["Graph Receptive Transformer Encoder 
 
 ```bibtex
 @article{grte2024,
-  author   = {Aras, Arda Can and Alikasifoglu ˘, Tuna and Koç, Aykut},
+  author   = {Aras, Arda Can and Alikaşifoğlu, Tuna and Koç, Aykut},
   journal  = {IEEE Transactions on Signal and Information Processing over Networks},
   title    = {Graph Receptive Transformer Encoder for Text Classification},
   year     = {2024},
   volume   = {},
   number   = {},
   pages    = {1-13},
-  keywords = {Text categorization;Context modeling;Training;Task analysis;Transformers;Computational modeling;Semantics;Text Classification;Graph Neural Networks (GNNs);Graph Convolutional Networks (GCNs);BERT;Transformers;Inductive;Transductive},
   doi      = {10.1109/TSIPN.2024.3380362}
 }
 ```
