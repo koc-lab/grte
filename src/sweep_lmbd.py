@@ -1,13 +1,13 @@
 from pathlib import Path
 from typing import Optional
 
+# import torch
+import wandb
 import yaml
 from configs import SearchParams
 from graph_datasets import Dataset  # noqa
 from type_run import run_type
 
-# import torch
-import wandb
 from src.util_fncs import set_seeds
 
 file_path = Path(__file__).parent.joinpath("sweep_params.yaml")
