@@ -12,9 +12,9 @@ This repository contains the code for the ["Graph Receptive Transformer Encoder 
   journal  = {IEEE Transactions on Signal and Information Processing over Networks},
   title    = {Graph Receptive Transformer Encoder for Text Classification},
   year     = {2024},
-  volume   = {},
+  volume   = {10},
   number   = {},
-  pages    = {1-13},
+  pages    = {347-359},
   doi      = {10.1109/TSIPN.2024.3380362}
 }
 ```
